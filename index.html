@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <form action="javascript:createParty();">
+        <label for="createSubmit">Create a New Party</label>
+        <input style='margin-left:5px'type="submit" id="createSubmit" value="Create">
+    </form>
+    <br><br>
+    <form action="javascript:joinParty();">
+            <label for="joinParty">Join Existing Party: </label>
+            <input style='margin-left:5px' type="text" id="joinParty" name="joinParty" value="">
+            <br><br>
+            <input type="submit" value="Join">
+    </form>
+    <h2 style="color:green;font-style: bold" id="responseText"></h2>
+    <script>
+        function createParty(){
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("responseText").innerHTML = this.responseText;
+                }
+            };
+            xhttp.open("POST", `http://localhost:3000/create`, true);
+            xhttp.send();
+        }
+        function joinParty(){
+            var room = document.getElementById("joinParty").value;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("responseText").innerHTML = this.responseText;
+                }
+            };
+            xhttp.open("POST", `http://localhost:3000/join/${room}`, true);
+            xhttp.send();
+        }
+    </script>   
+</body>
+</html>

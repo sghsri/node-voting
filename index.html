@@ -36,10 +36,13 @@
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("responseText").innerHTML = this.responseText;
+                    window.location.href = `http://localhost:3000/join/${room}`;
+                }
+                else if(this.readyState == 4 && this.status == 404){
+                    alert("No Party with that id could be found");
                 }
             };
-            xhttp.open("POST", `http://localhost:3000/join/${room}`, true);
+            xhttp.open("GET", `http://localhost:3000/join/${room}`, true);
             xhttp.send();
         }
     </script>   

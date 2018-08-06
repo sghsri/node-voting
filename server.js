@@ -15,16 +15,18 @@ app.post('/create',(req, res) => {
     rooms.push({id: roomid, participants: 1});
     console.log(rooms);
     res.send(`Successfully created a party with id: ${roomid}`)
+    console.log(`Successfully created a party with id: ${roomid}`)
 });
 
-app.post('/join/:id',(req, res) => {
+app.get('/join/:id',(req, res) => {
     var roomid = req.params.id;
     var theroom = rooms.find(x => {return x.id == roomid});
-    if(theroom == undefined){
-        res.send("Could not find a room with that id");
+    if(!theroom){
+        return res.status(404).send(`Could not find a room with id ${roomid}`);
     } else {
         theroom.participants++;
-        res.send(`Successfully joined a party with id: ${roomid}`)
+        console.log(`User successfully joined a party with id: ${roomid}`)
+        res.sendFile(__dirname + '/party.html')
     }
     console.log(rooms);
 });

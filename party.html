@@ -1,27 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+
 <body>
-    <h2>Join</h2>
+    <h2 id='question'>Question</h2>
+    <form id='answers' action="javascript:submitVote();">
+        <input type="submit" id="submit" value="Submit" style="margin-top:10px">
+    </form>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script>
-            // var xhttp = new XMLHttpRequest();
-            // xhttp.onreadystatechange = function() {
-            //     console.log(this.responseText);
-            //     if (this.readyState == 4 && this.status == 200) {
-            //         window.location.href = `/join/${room}`;
-            //     }
-            //     else if(this.readyState == 4 && this.status == 404){
-            //         alert("No Party with that id could be found");
-            //     }
-            // };
-            // xhttp.open("GET", `/room/${room}`, true);
-            // xhttp.send();
-    
+        console.log(localStorage.getItem('party'));
+        var thequestion = JSON.parse(localStorage.getItem('party'));
+        console.log(thequestion);
+        $('#question').text(thequestion.vote.question);
+        var answers = thequestion.vote.answers;
+        for (var i = 0; i < answers.length; i++) {
+            var ans = answers[i];
+            $('#submit').before(`<input type="radio" name="answer" value="${i}">${ans.answertext}<br>`);
+        }
+        $('input[type="radio"]').change(function () {
+            var index = $(this).val();
+            if (this.checked) {
+                thequestion.vote.answers[index].votes++;
+            } else {
+                thequestion.vote.answers[index].votes--;
+            }
+            console.log(thequestion);
+        })
+        function submitVote() {
+            var alreadyvoted = JSON.parse(localStorage.getItem('votedlist'));
+            if (alreadyvoted) {
+                if (alreadyvoted.includes(thequestion.id)) {
+                    return alert('You have already voted on this.');
+                }
+                else {
+                    alreadyvoted.push(thequestion.id);
+                    localStorage.setItem('votedlist', JSON.stringify(alreadyvoted));
+                }
+            }
+            else {
+                var alreadyvoted = [];
+                alreadyvoted[0] = thequestion.id;
+                localStorage.setItem('votedlist', JSON.stringify(alreadyvoted));
+            }
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log("updated");
+                }
+            };
+            xhttp.open("PUT", `/party/${thequestion.id}`, true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify(thequestion));
+        }
     </script>
 </body>
+
 </html>

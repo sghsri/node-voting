@@ -1,27 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+
 <body>
     <form action="javascript:createParty();">
         <label for="createSubmit">Create a New Party</label>
-        <input style='margin-left:5px'type="submit" id="createSubmit" value="Create">
+        <input style='margin-left:5px' type="submit" id="createSubmit" value="Create">
     </form>
-    <br><br>
+    <br>
+    <br>
     <form action="javascript:joinParty();">
-            <label for="joinParty">Join Existing Party: </label>
-            <input style='margin-left:5px' type="text" id="joinParty" name="joinParty" value="">
-            <br><br>
-            <input type="submit" value="Join">
+        <label for="joinParty">Join Existing Party: </label>
+        <input style='margin-left:5px' type="text" id="joinParty" name="joinParty" value="">
+        <br>
+        <br>
+        <input type="submit" value="Join">
     </form>
     <h2 style="color:green;font-style: bold" id="responseText"></h2>
-    
+
     <script>
-        function createParty(){
+        function createParty() {
             window.location.href = `/create/`;
             // var xhttp = new XMLHttpRequest();
             // xhttp.onreadystatechange = function() {
@@ -32,21 +36,23 @@
             // xhttp.open("POST", `/create`, true);
             // xhttp.send();
         }
-        function joinParty(){
+        function joinParty() {
             var room = document.getElementById("joinParty").value;
             var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                console.log(this.responseText);
+            xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    window.location.href = `/join/${room}`;
+                    alert(this.responseText);
+                    localStorage.setItem('party', this.responseText);
+                    window.location.href = `/party/${room}`;
                 }
-                else if(this.readyState == 4 && this.status == 404){
+                else if (this.readyState == 4 && this.status == 404) {
                     alert("No Party with that id could be found");
                 }
             };
-            xhttp.open("GET", `/join/${room}`, true);
+            xhttp.open("POST", `/join/${room}`, true);
             xhttp.send();
         }
-    </script>   
+    </script>
 </body>
+
 </html>

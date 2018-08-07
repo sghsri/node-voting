@@ -32,7 +32,6 @@ app.get('/api/party/:id', (req, res) => {
     } else {
         res.send(JSON.stringify(theroom));
     }
-    console.log("hello");
 });
 
 

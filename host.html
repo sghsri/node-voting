@@ -5,17 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Document</title>    
 </head>
-
+<script src="/socket.io/socket.io.js"></script>            
 <body>
     <h1 id='question'>Question</h1>
     <h2 id='id' style='font-weight:normal'></h2>
-    <button id='refresh' onclick="refresh()"> Refresh </button>
+    <button id='delete' onclick="deletePoll()"> Delete Poll </button>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
     <script>
         var id = new URL(window.location.href).pathname.split('/')[2];
+        var socket = io.connect('http://localhost:3000');
+        socket.on('connect', function(data) {
+            socket.emit('join', `${id}`);
+        });
+        socket.on('updatePoll', function(data) {
+            refresh();
+        });
+
         refresh();
         function refresh() {
             var xhttp = new XMLHttpRequest();
@@ -29,7 +37,7 @@
                     let ans = "";
                     $("p").remove();
                     for (var i = 0; i < arr.length; i++) {
-                        $("#refresh").before(`<p> ${arr[i].answertext}, votes: ${arr[i].votes}</p>`);
+                        $("#delete").before(`<p> ${arr[i].answertext}, votes: ${arr[i].votes}</p>`);
                     }
                 }
                 else if (this.readyState == 4 && this.status == 404) {
@@ -38,6 +46,9 @@
             };
             xhttp.open("GET", `/api/party/${id}`, true);
             xhttp.send();
+
+        }
+        function deletePoll(){
 
         }
     </script>

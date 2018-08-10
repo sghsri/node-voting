@@ -1,7 +1,10 @@
 const express = require("express");
 const app = express();
-var rooms = [];
+var server = require('http').createServer(app);  
+var io = require('socket.io')(server);
 var bodyParser = require("body-parser");
+
+var rooms = [];
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -60,16 +63,31 @@ app.post("/join/:id", (req, res) => {
     res.send(theroom);
   }
 });
+
 app.put("/party/:id", (req, res) => {
   var party = req.body;
   console.log(party.vote.answers);
   var foundIndex = rooms.findIndex(x => x.id == req.params.id);
   rooms[foundIndex] = party;
+  io.to(party.id).emit('updatePoll',party);
   res.send("updated");
-  console.log(rooms[foundIndex].vote.answers);
+  console.log("updated host");
 });
+
+app.delete("/api/party/:id", (req, res) => {
+  var party = 0;
+});
+io.on('connection', function(client) {  
+  console.log('Client connected...');
+  
+  client.on('join', function(data) {
+      client.join(data);
+  });
+
+});
+
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Listening on port: ${port}`);
 });
 

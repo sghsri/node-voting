@@ -6,25 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link type="text/css" href="css/styles.css" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
 </head>
 
 <body>
-    <form action="javascript:createParty();">
-        <label for="createSubmit">Create a New Party</label>
-        <input style='margin-left:5px' type="submit" id="createSubmit" value="Create">
-    </form>
-    <br>
-    <br>
-    <form action="javascript:joinParty();">
-        <label for="joinParty">Join Existing Party: </label>
-        <input style='margin-left:5px' type="text" id="joinParty" name="joinParty" value="">
-        <br>
-        <br>
-        <input type="submit" value="Join">
-    </form>
-    <h2 class="colored" id="responseText"></h2>
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-12">
+                    <div class="content is-large">
+                        <h3 class="title is-primary">Vote</h3>
+                        <div class="box">
+                            <form action="javascript:createParty();">
+                                <label for="createSubmit">Create a New Party</label>
+                                <input style='margin-left:5px' type="submit" id="createSubmit" class="button is-primary" value="Create">
+                            </form>
+                            <br>
+                            <form action="javascript:joinParty();">
+                                <label for="joinParty">Join Existing Party: </label>
+                                <input style='margin-left:5px' type="text" id="joinParty" name="joinParty" value="">
+                                <input type="submit" class="button is-primary" value="Join">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 
     <script>
         function createParty() {
@@ -38,6 +49,7 @@
             // xhttp.open("POST", `/create`, true);
             // xhttp.send();
         }
+
         function joinParty() {
             var room = document.getElementById("joinParty").value;
             var xhttp = new XMLHttpRequest();
@@ -45,8 +57,7 @@
                 if (this.readyState == 4 && this.status == 200) {
                     localStorage.setItem('party', this.responseText);
                     window.location.href = `/party`;
-                }
-                else if (this.readyState == 4 && this.status == 404) {
+                } else if (this.readyState == 4 && this.status == 404) {
                     alert("No Party with that id could be found");
                 }
             };

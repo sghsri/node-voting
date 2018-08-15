@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
-    <title>Document</title>
+    <title>Host</title>
 </head>
 <script src="/socket.io/socket.io.js"></script>
 
@@ -22,8 +22,9 @@
     <script>
         var id = new URL(window.location.href).pathname.split('/')[2];
         getCourse();
-
-        var socket = io.connect(location.origin.replace(/^http/, 'ws'));
+        host = location.origin.replace(/^http/, 'ws');
+        //host = "http://localhost:3000";
+        var socket = io.connect(host);
         socket.on('connect', function (data) {
             socket.emit('join', `${id}`);
         });

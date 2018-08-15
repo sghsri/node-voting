@@ -21,43 +21,53 @@
     </div>
     <script>
         var id = new URL(window.location.href).pathname.split('/')[2];
-        var socket = io.connect('http://localhost:3000');
+        getCourse();
+        var socket = io.connect('https://aqueous-caverns-48025.herokuapp.com:3000/');
         socket.on('connect', function (data) {
             socket.emit('join', `${id}`);
         });
         socket.on('updatePoll', function (data) {
-            refresh();
+            refresh(data);
         });
 
-        refresh();
+        function refresh(question) {
+            $('#id').text(`id: ${id}`);
+            $("#question").text(question.vote.question);
+            let arr = question.vote.answers;
+            $("p").remove();
+            for (var i = 0; i < arr.length; i++) {
+                $("#delete").before(
+                    `<p class='subtitle is-5' style='margin-top:5px;'> ${arr[i].answertext}, votes: ${arr[i].votes}</p>`
+                );
+            }
+        }
 
-        function refresh() {
+        function getCourse() {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     var question = JSON.parse(this.responseText);
                     console.log(question);
-                    $('#id').text(`id: ${id}`);
-                    $("#question").text(question.vote.question);
-                    var arr = question.vote.answers;
-                    let ans = "";
-                    $("p").remove();
-                    for (var i = 0; i < arr.length; i++) {
-                        $("#delete").before(
-                            `<p class='subtitle is-5' style='margin-top:5px;'> ${arr[i].answertext}, votes: ${arr[i].votes}</p>`
-                        );
-                    }
+                    refresh(question);
                 } else if (this.readyState == 4 && this.status == 404) {
                     alert("There was an error");
                 }
             };
             xhttp.open("GET", `/api/party/${id}`, true);
             xhttp.send();
-
         }
 
         function deletePoll() {
-
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    window.location.href = `/`;
+                } else if (this.readyState == 4 && this.status == 404) {
+                    alert("There was an error");
+                }
+            };
+            xhttp.open("DELETE", `/api/party/${id}`, true);
+            xhttp.send();
         }
     </script>
 </body>

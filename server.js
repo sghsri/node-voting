@@ -81,7 +81,18 @@ app.put("/party/:id", (req, res) => {
 });
 
 app.delete("/api/party/:id", (req, res) => {
-    var party = 0;
+    var roomid = req.params.id;
+    var theroom = rooms.indexOf(x => {
+        return x.id == roomid;
+    })
+    if (theroom) {
+        rooms.splice(theroom, 1);
+        res.send(`removed ${roomid}`);
+        console.log(`removed ${roomid}`);
+
+    } else {
+        res.send(`could not find ${roomid}`);
+    }
 });
 io.on('connection', function (client) {
     console.log('Client connected...');

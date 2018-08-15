@@ -22,7 +22,7 @@
     <script>
         var id = new URL(window.location.href).pathname.split('/')[2];
         getCourse();
-        var socket = io.connect('https://aqueous-caverns-48025.herokuapp.com:3000/');
+        var socket = io.connect('https://aqueous-caverns-48025.herokuapp.com');
         socket.on('connect', function (data) {
             socket.emit('join', `${id}`);
         });

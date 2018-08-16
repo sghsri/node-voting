@@ -7,8 +7,7 @@ function joinParty() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            localStorage.setItem('party', this.responseText);
-            window.location.href = `/party`;
+            window.location.href = `/party/${room}`;
         } else if (this.readyState == 4 && this.status == 404) {
             alert("No Party with that id could be found");
         }

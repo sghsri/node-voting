@@ -26,12 +26,13 @@ app.get("/", (req, res) => {
 app.get("/create/", (req, res) => {
     res.sendFile(__dirname + "/create.html");
 });
-app.get("/party/", (req, res) => {
+app.get("/party/:id", (req, res) => {
     res.sendFile(__dirname + "/party.html");
 });
 app.get("/host/:id", (req, res) => {
     res.sendFile(__dirname + "/host.html");
 });
+
 
 app.get("/api/party/:id", (req, res) => {
     var roomid = req.params.id;
@@ -43,6 +44,9 @@ app.get("/api/party/:id", (req, res) => {
     } else {
         res.send(JSON.stringify(theroom));
     }
+});
+app.get("*", (req, res) => {
+    res.sendFile(__dirname + "/error.html");
 });
 
 app.post("/create", (req, res) => {

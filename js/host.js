@@ -1,8 +1,8 @@
 $(function () {
     var id = new URL(window.location.href).pathname.split('/')[2];
     getCourse();
-    //host = location.origin.replace(/^http/, 'ws');
-    host = "http://localhost:3000";
+    host = location.origin.replace(/^http/, 'ws');
+    //host = "http://localhost:3000";
     var socket = io.connect(host);
     socket.on('connect', function (data) {
         socket.emit('join', `${id}`);

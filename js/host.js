@@ -2,7 +2,6 @@ $(function () {
     var id = new URL(window.location.href).pathname.split('/')[2];
     getCourse();
     host = location.origin.replace(/^http/, 'ws');
-    //host = "http://localhost:3000";
     var socket = io.connect(host);
     socket.on('connect', function (data) {
         socket.emit('join', `${id}`);
@@ -31,7 +30,7 @@ $(function () {
                 console.log(question);
                 refresh(question);
             } else if (this.readyState == 4 && this.status == 404) {
-                alert("There was an error");
+                window.location.href = "/*";
             }
         };
         xhttp.open("GET", `/api/party/${id}`, true);
@@ -44,10 +43,35 @@ $(function () {
             if (this.readyState == 4 && this.status == 200) {
                 window.location.href = `/`;
             } else if (this.readyState == 4 && this.status == 404) {
-                alert("There was an error");
+                window.location.href = "/*";
             }
         };
         xhttp.open("DELETE", `/api/party/${id}`, true);
         xhttp.send();
     });
+    $("#share").on({
+        mouseenter: function () {
+            $(this).html(
+                'Click to Copy'
+            );
+        },
+        mouseleave: function () {
+            $(this).html('Share Link');
+        },
+        click: function () {
+            var link = (window.location.hostname + window.location.pathname).replace("/host/", "/party/");
+            copyToClipboard(link);
+            $(this).html(
+                'Link Copied!');
+        }
+    });
+
+    function copyToClipboard(link) {
+        let input = document.createElement("input");
+        document.body.appendChild(input);
+        input.setAttribute('value', link);
+        input.select();
+        document.execCommand("copy");
+        document.body.removeChild(input);
+    }
 });

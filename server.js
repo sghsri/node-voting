@@ -7,18 +7,15 @@ var bodyParser = require("body-parser");
 var rooms = [];
 
 app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    next();
-});
-
-app.use(express.static(__dirname));
-
-
-app.use(bodyParser.json());
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header(
+            "Access-Control-Allow-Headers",
+            "Origin, X-Requested-With, Content-Type, Accept"
+        );
+        next();
+    })
+    .use(express.static(__dirname))
+    .use(bodyParser.json());
 
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/index.html");

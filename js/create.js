@@ -1,7 +1,7 @@
 $(function () {
     $("#addMore").click(e => {
         $("#addMore").before(
-            "<label class='subtitle'>Answer: </><input style = 'margin-left:5px; width:30%' placeholder='because...'class='input' type='text' name='answer'></><br><br>"
+            "<label class='subtitle'>Answer: </><input style = 'margin-left:5px; width:80%' placeholder='because...'class='input' type='text' name='answer'></><br><br>"
         );
     });
     $("#create").click(e => {
